@@ -121,7 +121,6 @@ Japanese-Learning-Web/
 ├── index.html              # Main application entry point
 ├── script.js               # Core application logic
 ├── style.css               # Styling and responsive design
-├── test.html               # Development testing utilities
 └── README.md               # Project documentation
 ```
 

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title data-translate-key="pageTitle">日文能力測驗</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#FF9800">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="日文測驗">
+    
+    <!-- Favicon and Icons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='24' font-size='24'>🇯🇵</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect width='180' height='180' fill='%23FF9800'/><text x='90' y='120' font-size='80' text-anchor='middle' fill='white'>日</text></svg>">
+    
+    <link rel="stylesheet" href="style.css">
+    <!-- **新增**：引入 Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <!-- 語言切換器 -->
+    <div class="language-switcher">
+        <button data-lang="zh">中文</button>
+        <button data-lang="en">English</button>
+    </div>
+
+    <!-- 主容器 -->
+    <div class="container">
+
+        <!-- 初始畫面 -->
+        <div id="start-screen" class="screen active">
+            <header>
+                <h1 data-translate-key="mainTitle">日文能力測驗</h1>
+                <p data-translate-key="mainSubtitle">選擇你的等級，開始挑戰吧！</p>
+            </header>
+            
+            <main>
+                <section id="level-selection">
+                    <h2 data-translate-key="levelTitle">選擇等級</h2>
+                    <div class="card-container">
+                        <div class="card" data-level="N5">N5</div>
+                        <div class="card" data-level="N4">N4</div>
+                        <div class="card" data-level="N3">N3</div>
+                        <div class="card" data-level="N2">N2</div>
+                        <div class="card" data-level="N1">N1</div>
+                        <div class="card" data-level="Beginner" data-translate-key="levelBeginner">初級</div>
+                    </div>
+                </section>
+
+                <section id="quantity-selection">
+                    <h2 data-translate-key="quantityTitle">選擇題數</h2>
+                    <div class="quantity-options">
+                        <button class="quantity-btn" data-quantity="10" data-translate-key="quantity10">10題</button>
+                        <button class="quantity-btn" data-quantity="20" data-translate-key="quantity20">20題</button>
+                        <button class="quantity-btn" data-quantity="50" data-translate-key="quantity50">50題</button>
+                        <input type="number" id="custom-quantity" data-translate-placeholder="customPlaceholder">
+                    </div>
+                </section>
+
+                <button id="start-quiz-btn" class="main-btn" data-translate-key="startBtn">開始測驗</button>
+                <button id="show-history-btn" class="secondary-btn" data-translate-key="historyBtn">查看學習紀錄</button>
+            </main>
+        </div>
+
+        <!-- 測驗畫面 (無變更) -->
+        <div id="quiz-screen" class="screen">
+            <header class="quiz-header">
+                <div id="timer">00:00</div>
+                <h2 data-translate-key="quizInProgress">測驗進行中...</h2>
+                <div></div>
+            </header>
+            <div id="quiz-content"></div>
+            <button id="submit-quiz-btn" class="main-btn" data-translate-key="submitBtn">提交答案</button>
+        </div>
+
+        <!-- 結果畫面 (無變更) -->
+        <div id="result-screen" class="screen">
+            <header>
+                <h1 data-translate-key="resultsTitle">測驗結果</h1>
+            </header>
+            <main>
+                <div id="score-details"></div>
+                <div id="wrong-answers">
+                    <h2 data-translate-key="wrongAnswersTitle">錯題解析</h2>
+                </div>
+                <button id="restart-quiz-btn" class="main-btn" data-translate-key="restartBtn">再測一次</button>
+            </main>
+        </div>
+
+        <!-- 歷史紀錄畫面 -->
+        <div id="history-screen" class="screen">
+            <header>
+                <h1 data-translate-key="historyTitle">學習紀錄</h1>
+            </header>
+            <main>
+                <!-- **新增**：學習進度表區塊 -->
+                <section id="progress-chart-section">
+                    <h2 data-translate-key="progressChartTitle">學習進度表</h2>
+                    <div class="chart-container">
+                        <canvas id="progressChart"></canvas>
+                    </div>
+                </section>
+                
+                <section id="my-achievements">
+                    <h2 data-translate-key="myBadgesTitle">我的徽章</h2>
+                    <div id="achievements-container"></div>
+                </section>
+                <section id="my-history">
+                    <h2 data-translate-key="myHistoryTitle">測驗歷史</h2>
+                    <div id="history-list-container"></div>
+                </section>
+                <button id="back-to-start-btn" class="main-btn" data-translate-key="backBtn">返回首頁</button>
+            </main>
+        </div>
+    </div>
+
+    <!-- 成就彈窗 (無變更) -->
+    <div id="achievement-popup" class="hidden">
+        <div class="popup-content">
+            <span class="popup-close">×</span>
+            <div id="achievement-icon"></div>
+            <h3 data-translate-key="achievementUnlocked">成就解鎖！</h3>
+            <p id="achievement-name"></p>
+            <p id="achievement-desc"></p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

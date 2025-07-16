@@ -1,0 +1,221 @@
+/* 基本樣式與暖色系變數 */
+:root {
+    --primary-color: #FFC107; /* 主色 - 暖黃 */
+    --secondary-color: #FF9800; /* 次色 - 暖橙 */
+    --background-color: #FFF8E1; /* 背景色 - 米黃 */
+    --text-color: #5D4037; /* 文字顏色 - 深棕 */
+    --correct-color: #4CAF50; /* 正確答案 - 綠色 */
+    --wrong-color: #F44336; /* 錯誤答案 - 紅色 */
+    --card-bg-color: #FFFFFF;
+}
+
+body {
+    font-family: 'Helvetica Neue', 'Arial', '微軟正黑體', sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding-top: 70px; /* 為語言切換器留出空間 */
+}
+
+/* --- 新增：語言切換器 --- */
+.language-switcher {
+    position: fixed;
+    top: 15px;
+    right: 20px;
+    background: white;
+    padding: 5px;
+    border-radius: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    z-index: 100;
+}
+.language-switcher button {
+    border: none;
+    background: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 15px;
+    color: var(--text-color);
+    font-weight: bold;
+}
+.language-switcher button.active {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+
+.container {
+    width: 100%;
+    max-width: 800px;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.screen { display: none; }
+.screen.active { display: block; }
+
+header { text-align: center; margin-bottom: 30px; }
+h1 { color: var(--secondary-color); }
+
+.card-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-bottom: 30px; }
+.card { background-color: var(--card-bg-color); border: 2px solid var(--primary-color); border-radius: 15px; padding: 20px 30px; font-size: 1.2em; font-weight: bold; cursor: pointer; transition: all 0.3s ease; }
+.card:hover, .card.selected { background-color: var(--primary-color); color: white; transform: translateY(-5px); box-shadow: 0 8px 15px rgba(0,0,0,0.1); }
+
+#quantity-selection { text-align: center; margin-bottom: 30px; }
+.quantity-options { display: flex; justify-content: center; align-items: center; gap: 10px; flex-wrap: wrap;}
+.quantity-btn { background: none; border: 2px solid var(--secondary-color); border-radius: 20px; padding: 10px 20px; cursor: pointer; transition: all 0.3s; }
+.quantity-btn.selected, .quantity-btn:hover { background-color: var(--secondary-color); color: white; }
+#custom-quantity { width: 100px; padding: 10px; border: 2px solid #ccc; border-radius: 10px; text-align: center; }
+
+.main-btn, .secondary-btn { display: block; width: 60%; margin: 20px auto 0; padding: 15px; font-size: 1.2em; font-weight: bold; border: none; border-radius: 30px; cursor: pointer; transition: all 0.3s; }
+.main-btn { color: white; background: linear-gradient(45deg, var(--primary-color), var(--secondary-color)); box-shadow: 0 4px 10px rgba(255, 152, 0, 0.4); }
+.main-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 15px rgba(255, 152, 0, 0.5); }
+.secondary-btn { background: none; border: 2px solid var(--secondary-color); color: var(--secondary-color); }
+.secondary-btn:hover { background: var(--secondary-color); color: white; }
+
+.quiz-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+#timer { font-size: 1.5em; font-weight: bold; background-color: var(--secondary-color); color: white; padding: 5px 15px; border-radius: 10px; }
+
+.question-block { background-color: #fdfdfd; padding: 20px; margin-bottom: 20px; border-radius: 10px; border-left: 5px solid var(--primary-color); }
+.question-title { font-weight: bold; font-size: 1.1em; margin-bottom: 15px; }
+.options-container label { display: block; background-color: #f8f9fa; padding: 12px 15px; border-radius: 8px; margin-bottom: 10px; cursor: pointer; transition: background-color 0.3s; }
+.options-container label:hover { background-color: #e9ecef; }
+.options-container input[type="radio"] { margin-right: 10px; }
+
+#score-details { text-align: center; background-color: var(--background-color); padding: 20px; border-radius: 15px; margin-bottom: 30px; }
+.final-score { font-size: 2.5em; color: var(--secondary-color); font-weight: bold; }
+#score-details ul { list-style: none; padding: 0; text-align: left; max-width: 300px; margin: 15px auto 0; }
+#score-details ul li { background-color: white; padding: 8px; border-radius: 5px; margin-bottom: 5px; }
+
+.wrong-answer-block { background-color: #fff9f9; border: 1px solid #ffdddd; padding: 15px; margin-bottom: 15px; border-radius: 8px; }
+.wrong-answer-block .user-answer { color: var(--wrong-color); font-weight: bold; }
+.wrong-answer-block .correct-answer { color: var(--correct-answer); font-weight: bold; }
+.wrong-answer-block .explanation { margin-top: 10px; padding-top: 10px; border-top: 1px dashed #ccc; font-size: 0.95em; color: #555; }
+
+/* --- 新增：歷史紀錄與徽章樣式 --- */
+#history-screen section { margin-bottom: 30px; }
+#achievements-container { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; }
+.achievement-badge { text-align: center; }
+.achievement-badge .icon { font-size: 4em; filter: grayscale(1); opacity: 0.4; }
+.achievement-badge.unlocked .icon { filter: grayscale(0); opacity: 1; }
+.achievement-badge.unlocked .name { font-weight: bold; color: var(--secondary-color); }
+#history-list-container { max-height: 300px; overflow-y: auto; border: 1px solid #ddd; padding: 10px; border-radius: 10px; }
+.history-item { display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid #eee; }
+.history-item:last-child { border-bottom: none; }
+.history-item .score { font-weight: bold; }
+
+/* --- 新增：成就彈窗樣式 --- */
+#achievement-popup { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; z-index: 200; transition: opacity 0.3s; }
+#achievement-popup.hidden { opacity: 0; pointer-events: none; }
+.popup-content { background: white; padding: 30px; border-radius: 20px; text-align: center; width: 90%; max-width: 350px; position: relative; transform: scale(0.9); animation: popup-appear 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+@keyframes popup-appear { to { transform: scale(1); } }
+.popup-close { position: absolute; top: 15px; right: 20px; font-size: 2em; cursor: pointer; color: #aaa; }
+#achievement-icon { font-size: 5em; margin-bottom: 15px; color: var(--primary-color); }
+#achievement-name { font-size: 1.5em; color: var(--secondary-color); margin: 0 0 10px; }
+
+@media (max-width: 600px) {
+    body { padding: 10px; padding-top: 70px; }
+    .container { padding: 15px; }
+    .card-container { gap: 10px; }
+    .card { padding: 15px 20px; font-size: 1em; }
+    .main-btn, .secondary-btn { width: 100%; }
+}
+
+/* iPhone 專用優化 */
+@media (max-width: 480px) {
+    .container {
+        margin: 5px;
+        padding: 10px;
+    }
+    
+    .card {
+        padding: 12px 16px;
+        font-size: 0.9em;
+        min-height: 44px; /* iOS 建議的最小觸控目標 */
+    }
+    
+    .quantity-options {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .quantity-btn {
+        min-height: 44px;
+        width: 100%;
+    }
+    
+    #custom-quantity {
+        width: 100%;
+        min-height: 44px;
+    }
+    
+    .quiz-header {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+    
+    .question-block {
+        padding: 15px;
+    }
+    
+    .options-container label {
+        padding: 15px;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+    }
+}
+
+/* iPhone X 以上機型的安全區域支援 */
+@supports (padding: max(0px)) {
+    body {
+        padding-top: max(70px, env(safe-area-inset-top));
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+    
+    .language-switcher {
+        top: max(15px, env(safe-area-inset-top));
+    }
+}
+
+/* 移除 iOS 點擊高亮效果 */
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* 改善觸控體驗 */
+.card, .quantity-btn, .main-btn, .secondary-btn {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 防止 iOS 縮放輸入框 */
+input, select, textarea {
+    font-size: 16px;
+}
+
+/* --- 請將以下樣式追加到 style.css 檔案的末尾 --- */
+
+/* 學習進度表容器 */
+#progress-chart-section {
+    margin-bottom: 30px;
+}
+
+.chart-container {
+    position: relative;
+    height: 300px; /* 調整圖表高度 */
+    width: 100%;
+    background-color: #fdfdfd;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}

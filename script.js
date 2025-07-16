@@ -2,6 +2,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- 多語言翻譯物件 ---
     const translations = {
+             noBadges: "尚未獲得任何徽章，繼續學習吧！",
+            chartLabel: "測驗分數進度",
+            progressChartTitle: "學習進度圖表",
+            settingsTitle: "API 設定",
+            geminiApiTitle: "Gemini API 配置",
+            apiNotConfigured: "尚未配置",
+            apiConfigured: "已配置",
+            apiTesting: "測試中...",
+            apiKeyLabel: "API 金鑰:",
+            apiKeyHelper: "您可以在 Google AI Studio 取得免費的 API 金鑰",
+            saveApiKey: "儲存金鑰",
+            testApi: "測試連接",
+            removeApiKey: "移除金鑰",
+            questionGeneratorTitle: "題目生成器",
+            genLevelLabel: "等級:",
+            genTypeLabel: "類型:",
+            genTopicLabel: "主題 (可選):",
+            genCountLabel: "數量:",
+            generateQuestions: "生成題目",
+            apiKeySaved: "API 金鑰儲存成功！",
+            apiKeyRemoved: "API 金鑰已移除！",
+            testSuccess: "連接測試成功！",
+            testFailed: "連接測試失敗：",
+            generateSuccess: "題目生成成功！",
+            generateFailed: "題目生成失敗："
+        },
         en: {
             pageTitle: "Japanese Proficiency Test",
             mainTitle: "Japanese Proficiency Test",
@@ -15,6 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
             customPlaceholder: "Custom",
             startBtn: "Start Quiz",
             historyBtn: "View Learning History",
+            settingsBtn: "API Settings",
             quizInProgress: "Quiz in Progress...",
             submitBtn: "Submit Answers",
             resultsTitle: "Quiz Results",
@@ -43,7 +70,29 @@ document.addEventListener('DOMContentLoaded', () => {
             noHistory: "No test history yet. Complete a quiz to start!",
             noBadges: "No badges earned yet. Keep learning!",
             chartLabel: "Quiz Score Progress",
-            progressChartTitle: "Learning Progress Chart"
+            progressChartTitle: "Learning Progress Chart",
+            settingsTitle: "API Settings",
+            geminiApiTitle: "Gemini API Configuration",
+            apiNotConfigured: "Not Configured",
+            apiConfigured: "Configured",
+            apiTesting: "Testing...",
+            apiKeyLabel: "API Key:",
+            apiKeyHelper: "You can get a free API key from Google AI Studio",
+            saveApiKey: "Save Key",
+            testApi: "Test Connection",
+            removeApiKey: "Remove Key",
+            questionGeneratorTitle: "Question Generator",
+            genLevelLabel: "Level:",
+            genTypeLabel: "Type:",
+            genTopicLabel: "Topic (Optional):",
+            genCountLabel: "Count:",
+            generateQuestions: "Generate Questions",
+            apiKeySaved: "API key saved successfully!",
+            apiKeyRemoved: "API key removed!",
+            testSuccess: "Connection successful!",
+            testFailed: "Connection failed: ",
+            generateSuccess: "Questions generated successfully!",
+            generateFailed: "Generation failed: "
         },
         zh: {
             pageTitle: "日文能力測驗",
@@ -58,6 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
             customPlaceholder: "自訂題數",
             startBtn: "開始測驗",
             historyBtn: "查看學習紀錄",
+            settingsBtn: "API 設定",
             quizInProgress: "測驗進行中...",
             submitBtn: "提交答案",
             resultsTitle: "測驗結果",
@@ -85,8 +135,30 @@ document.addEventListener('DOMContentLoaded', () => {
             score: "分數",
             noHistory: "還沒有測驗紀錄，快完成一次測驗吧！",
             noBadges: "尚未獲得任何徽章，繼續學習吧！",
-            chartLabel: "測驗分數進步圖",
-            progressChartTitle: "學習進度表"
+            chartLabel: "測驗分數進度",
+            progressChartTitle: "學習進度圖表",
+            settingsTitle: "API 設定",
+            geminiApiTitle: "Gemini API 配置",
+            apiNotConfigured: "尚未配置",
+            apiConfigured: "已配置",
+            apiTesting: "測試中...",
+            apiKeyLabel: "API 金鑰:",
+            apiKeyHelper: "您可以在 Google AI Studio 取得免費的 API 金鑰",
+            saveApiKey: "儲存金鑰",
+            testApi: "測試連接",
+            removeApiKey: "移除金鑰",
+            questionGeneratorTitle: "題目生成器",
+            genLevelLabel: "等級:",
+            genTypeLabel: "類型:",
+            genTopicLabel: "主題 (可選):",
+            genCountLabel: "數量:",
+            generateQuestions: "生成題目",
+            apiKeySaved: "API 金鑰儲存成功！",
+            apiKeyRemoved: "API 金鑰已移除！",
+            testSuccess: "連接測試成功！",
+            testFailed: "連接測試失敗：",
+            generateSuccess: "題目生成成功！",
+            generateFailed: "題目生成失敗："
         }
     };
     
@@ -94,59 +166,20 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentLanguage = 'zh';
     let myChart = null; // Chart.js 圖表實例
 
-    // --- 模擬題庫 ---
-    const questionDB = [
-        // --- N5 ---
-        { id: 1, level: 'N5', type: '漢字', question: '「水」の読み方は？', options: ['みず', 'すい', 'みづ', 'すいり'], answer: 'みず', explanation: '「水」在單獨使用時通常讀作「みず」。' },
-        { id: 2, level: 'N5', type: '詞彙', question: 'わたしは　まいばん　テレビを＿＿＿＿。', options: ['みます', 'ききます', 'よみます', 'たべます'], answer: 'みます', explanation: '「テレビを見る」是「看電視」的固定用法。' },
-        { id: 3, level: 'N5', type: '文法', question: 'これは　だれの　かばんです＿＿。', options: ['が', 'を', 'か', 'に'], answer: 'か', explanation: '句尾的「か」表示疑問。' },
-        { id: 13, level: 'N5', type: '漢字', question: '「大きい」の読み方は？', options: ['おおきい', 'だいきい', 'たいきい', 'おっきい'], answer: 'おおきい', explanation: '「大きい」的正確讀音是「おおきい」。' },
-        { id: 14, level: 'N5', type: '詞彙', question: '駅まで　＿＿＿＿で　行きますか。', options: ['どうして', 'どちら', 'なんで', 'どのように'], answer: 'なんで', explanation: '「なんで」在這裡是口語中詢問方法、手段的「用什麼」。' },
-        { id: 15, level: 'N5', type: '文法', question: '机の　うえ＿＿＿　ねこが　います。', options: ['に', 'で', 'を', 'へ'], answer: 'に', explanation: '助詞「に」用來表示存在的場所。' },
-        { id: 16, level: 'N5', type: '詞彙', question: 'きのうは　いい＿＿＿＿でしたね。', options: ['てんき', 'でんき', 'げんき', 'てんし'], answer: 'てんき', explanation: '「いい天気」是「好天氣」的意思。' },
-        { id: 17, level: 'N5', type: '文法', question: 'すみませんが、ドアを＿＿＿＿ください。', options: ['しめて', 'しめって', 'しめても', 'しめる'], answer: 'しめて', explanation: '「〜てください」前面接動詞的て形，表示請求。' },
-
-        // --- N4 ---
-        { id: 4, level: 'N4', type: '詞彙', question: 'この町はとても＿＿＿＿です。', options: ['にぎやか', 'しずか', 'きれい', 'ゆうめい'], answer: 'にぎやか', explanation: '「にぎやか」是「熱鬧」的意思，符合描述城鎮的常用詞。' },
-        { id: 5, level: 'N4', type: '文法', question: '明日、雨が＿＿＿＿、試合は中止です。', options: ['降れば', '降って', '降るなら', '降ると'], answer: '降れば', explanation: '「〜ば」用於表示假定條件。如果下雨，比賽就中止。' },
-        { id: 6, level: 'N4', type: '漢字', question: '「歌」の動詞形は？', options: ['歌います', '話します', '聞きます', '書きます'], answer: '歌います', explanation: '「歌」的動詞形式是「歌います」(唱歌)。' },
-        { id: 18, level: 'N4', type: '文法', question: '弟は　漢字を　書く＿＿＿が　できます。', options: ['こと', 'もの', 'ほう', 'とき'], answer: 'こと', explanation: '「動詞原形 + ことができます」表示「能夠做某事」。' },
-        { id: 19, level: 'N4', type: '詞彙', question: '問題が＿＿＿＿なので、先生に聞きました。', options: ['かんたん', 'ふくざつ', 'べんり', 'じょうぶ'], answer: 'ふくざつ', explanation: '「複雑」是「複雜」的意思，所以才會去問老師。' },
-        { id: 20, level: 'N4', type: '漢字', question: '「旅行」の読み方は？', options: ['りょこう', 'りよこう', 'りこう', 'りょうこ'], answer: 'りょこう', explanation: '「旅行」的正確讀音是「りょこう」。' },
-        { id: 21, level: 'N4', type: '文法', question: '会議の前に、資料を＿＿＿＿おきます。', options: ['読んで', '読むで', '読みて', '読んだ'], answer: '読んで', explanation: '「〜ておきます」表示為將來做準備，前面接動詞て形。' },
-
-        // --- N3 ---
-        { id: 7, level: 'N3', type: '文法', question: '彼は病気だった＿＿＿＿、会議に出席した。', options: ['にもかかわらず', 'おかげで', 'せいか', 'わりに'], answer: 'にもかかわらず', explanation: '「〜にもかかわらず」表示「儘管...卻...」，用於前後文意相反的情況。' },
-        { id: 8, level: 'N3', type: '詞彙', question: 'そのニュースを聞いて、＿＿＿＿した。', options: ['がっかり', 'びっくり', 'はっきり', 'うっかり'], answer: 'びっくり', explanation: '「びっくりする」是「嚇一跳、吃驚」的意思。' },
-        { id: 22, level: 'N3', type: '漢字', question: '「案内」の読み方は？', options: ['あんない', 'あない', 'あんねい', 'あんあい'], answer: 'あんない', explanation: '「案内」的正確讀音是「あんない」。' },
-        { id: 23, level: 'N3', type: '文法', question: 'このお寺は、有名＿＿＿＿、いつも人が多い。', options: ['なだけあって', 'なばかりに', 'なものだから', 'なせいか'], answer: 'なだけあって', explanation: '「〜だけあって」表示「不愧是...，正因為...」，前接的理由與後述結果相符。' },
-        { id: 24, level: 'N3', type: '詞彙', question: '彼は私の意見に＿＿＿＿してくれた。', options: ['賛成', '反対', '成功', '感謝'], answer: '賛成', explanation: '「賛成する」是「贊成」的意思。' },
-        { id: 40, level: 'N3', type: '讀解', question: '「田中さんは昨日、デパートで青いセーターを買いました。しかし、家に帰って着てみると、思ったよりサイズが小さかったので、今日、交換しに行くつもりです。」この文章の内容と合っているものはどれか。', options: ['田中さんは今日、青いセーターを買う。', '田中さんのセーターは大きすぎた。', '田中さんは昨日、デパートに行った。', '田中さんはセーターを交換できない。'], answer: '田中さんは昨日、デパートに行った。', explanation: '文章第一句明確指出「田中さんは昨日、デパートで青いセーターを買いました」，所以「昨天去了百貨公司」是正確的。' },
-
-
-        // --- N2 ---
-        { id: 9, level: 'N2', type: '文法', question: 'この問題は難しくて、私には解け＿＿＿＿。', options: ['かねる', 'がたい', 'そうもない', 'きれない'], answer: 'そうもない', explanation: '「〜そうもない」表示「看起來不可能...」，強調可能性極低。' },
-        { id: 25, level: 'N2', type: '詞彙', question: '彼は＿＿＿＿な知識を持っている。', options: ['膨大', '巨大', '拡大', '増大'], answer: '膨大', explanation: '「膨大な知識」是「龐大的知識」的固定搭配。' },
-        { id: 26, level: 'N2', type: '文法', question: '一度決めた＿＿＿＿、最後までやり遂げるべきだ。', options: ['以上は', '上は', 'からには', 'ところを'], answer: 'からには', explanation: '「〜からには」表示「既然已經...就理應...」，帶有強烈的決心和義務感。' },
-        { id: 27, level: 'N2', type: '漢字', question: '「解決」の同義語はどれか。', options: ['処理', '解釈', '解放', '分析'], answer: '処理', explanation: '「解決」和「処理」都有處理、解決問題的意思，但「処理」更側重於事務性的處理。在此選項中為最佳解。' },
-        { id: 28, level: 'N2', type: '詞彙', question: '彼の話は＿＿＿＿があって面白い。', options: ['ユーモア', 'ジョーク', '冗談', 'しゃれ'], answer: 'ユーモア', explanation: '「ユーモア」(humor) 指整體帶有趣味、幽默感，與「話」(談話內容) 搭配最自然。' },
-        { id: 29, level: 'N2', type: '文法', question: '大雨で電車が止まった＿＿＿＿、会議に遅れてしまった。', options: ['あげく', '末に', '結果', 'あまり'], answer: 'あげく', explanation: '「〜あげく」表示「...的結果(通常是不好的結果)」。前面常接長時間或反覆的行為。' },
-
-        // --- N1 ---
-        { id: 11, level: 'N1', type: '詞彙', question: '彼の態度は非常に＿＿＿＿だ。', options: ['傲慢（ごうまん）', '謙虚（けんきょ）', '臆病（おくびょう）', '柔軟（じゅうなん）'], answer: '傲慢（ごうまん）', explanation: '「傲慢」意指態度高傲、看不起人。' },
-        { id: 30, level: 'N1', type: '文法', question: 'その作家の最新作は、読む＿＿＿＿傑作だと言われている。', options: ['までもない', 'べくもない', 'にたえない', 'に足る'], answer: 'までもない', explanation: '「〜までもない」表示「連...的必要都沒有」，用來強調事情的顯而易見性。這裡意指「不用讀就知道是傑作」。' },
-        { id: 31, level: 'N1', type: '詞彙', question: '両国間の交渉は＿＿＿＿している。', options: ['難航', '航海', '難行', '運行'], answer: '難航', explanation: '「難航（なんこう）する」常用來比喻事情進展不順利、陷入困境。' },
-        { id: 32, level: 'N1', type: '文法', question: '長年の努力＿＿＿＿、彼はついに夢を実現した。', options: ['の極み', 'をもって', 'の末', 'ならでは'], answer: 'の末', explanation: '「〜の末（すえ）」表示「經過了(長時間的)...之後，最終...」。' },
-        { id: 33, level: 'N1', type: '漢字', question: '「陳腐」の正しい読み方は？', options: ['ちんぷ', 'ちんふ', 'ちんぶ', 'じんぷ'], answer: 'ちんぷ', explanation: '「陳腐」的正確讀音是「ちんぷ」，意指陳腐、老套。' },
-        { id: 34, level: 'N1', type: '文法', question: '今回の失敗を＿＿＿＿、二度と同じ過ちを犯さないようにしよう。', options: ['教訓として', 'はじめとして', '抜きにして', 'よそに'], answer: '教訓として', explanation: '「〜を教訓として」表示「以...為教訓」。' },
-
-        // --- Beginner (For N5/N4 pool) ---
-        { id: 12, level: 'Beginner', type: '詞彙', question: 'えんぴつで　なまえを　＿＿＿＿ください。', options: ['かいて', 'よんで', 'きいて', 'はなして'], answer: 'かいて', explanation: '「書く」(かく) 的て形是「かいて」，意為「書寫」。' },
-        { id: 35, level: 'Beginner', type: '漢字', question: '「休み」の読み方は？', options: ['やすみ', 'きゅうみ', 'きゅうじつ', 'やすむ'], answer: 'やすみ', explanation: '名詞「休み」的讀音是「やすみ」。' },
-        { id: 36, level: 'Beginner', type: '文法', question: 'この　りんごは　おいしいです。それ＿＿＿、やすいです。', options: ['から', 'そして', 'でも', 'じゃあ'], answer: 'そして', explanation: '「そして」用來連接兩個語氣順承的句子，表示「而且」。' },
-        { id: 37, level: 'Beginner', type: '詞彙', question: 'わたしの　へやは　とても＿＿＿＿です。', options: ['あかるい', 'くろい', 'おもい', 'せまい'], answer: 'あかるい', explanation: '「明るい」是「明亮」的意思，是描述房間的常用形容詞。' }
-    ];
+    // 從外部模組獲取題庫
+    let questionDB = [];
     
+    // 初始化題庫
+    function initializeQuestionDatabase() {
+        if (window.QuestionDatabase && window.QuestionDatabase.questionDB) {
+            questionDB = window.QuestionDatabase.questionDB;
+            console.log(`題庫已載入: ${questionDB.length} 題`);
+        } else {
+            console.error('無法載入題庫模組');
+            alert('題庫載入失敗，請重新整理頁面');
+        }
+    }
+
     // --- 徽章資料庫 ---
     const achievementsDB = {
         firstQuiz: { icon: '🔰', zh: { name: '初次挑戰', desc: '完成你的第一次測驗' }, en: { name: 'First Challenge', desc: 'Complete your first quiz' } },
@@ -161,14 +194,35 @@ document.addEventListener('DOMContentLoaded', () => {
         start: document.getElementById('start-screen'),
         quiz: document.getElementById('quiz-screen'),
         result: document.getElementById('result-screen'),
-        history: document.getElementById('history-screen')
+        history: document.getElementById('history-screen'),
+        settings: document.getElementById('settings-screen')
     };
     const showHistoryBtn = document.getElementById('show-history-btn');
+    const showSettingsBtn = document.getElementById('show-settings-btn');
     const backToStartBtn = document.getElementById('back-to-start-btn');
+    const backToStartFromSettingsBtn = document.getElementById('back-to-start-from-settings-btn');
     const historyListContainer = document.getElementById('history-list-container');
     const achievementsContainer = document.getElementById('achievements-container');
     const popup = document.getElementById('achievement-popup');
     const popupClose = document.querySelector('.popup-close');
+    
+    // 設定界面元素
+    const apiKeyInput = document.getElementById('api-key-input');
+    const toggleApiKeyVisibilityBtn = document.getElementById('toggle-api-key-visibility');
+    const saveApiKeyBtn = document.getElementById('save-api-key-btn');
+    const testApiBtn = document.getElementById('test-api-btn');
+    const removeApiKeyBtn = document.getElementById('remove-api-key-btn');
+    const apiStatusIndicator = document.getElementById('api-status-indicator');
+    const apiStatusText = document.getElementById('api-status-text');
+    const apiTestResult = document.getElementById('api-test-result');
+    
+    // 題目生成器元素
+    const genLevelSelect = document.getElementById('gen-level');
+    const genTypeSelect = document.getElementById('gen-type');
+    const genTopicInput = document.getElementById('gen-topic');
+    const genCountInput = document.getElementById('gen-count');
+    const generateQuestionsBtn = document.getElementById('generate-questions-btn');
+    const generationResult = document.getElementById('generation-result');
     
     // (其他元素獲取與前一版相同，此處省略)
     const levelCards = document.querySelectorAll('.card');
@@ -186,6 +240,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- 初始化 ---
     function init() {
+        // 首先初始化題庫
+        initializeQuestionDatabase();
+        
         const savedLang = localStorage.getItem('userLanguage') || 'zh';
         setLanguage(savedLang);
 
@@ -237,7 +294,30 @@ document.addEventListener('DOMContentLoaded', () => {
             restartQuizBtn.addEventListener('click', resetQuiz);
         }
         showHistoryBtn.addEventListener('click', showHistoryScreen);
+        if (showSettingsBtn) {
+            showSettingsBtn.addEventListener('click', showSettingsScreen);
+        }
         backToStartBtn.addEventListener('click', () => switchScreen(screens.start));
+        if (backToStartFromSettingsBtn) {
+            backToStartFromSettingsBtn.addEventListener('click', () => switchScreen(screens.start));
+        }
+        
+        // 設定界面事件監聽器
+        if (toggleApiKeyVisibilityBtn) {
+            toggleApiKeyVisibilityBtn.addEventListener('click', toggleApiKeyVisibility);
+        }
+        if (saveApiKeyBtn) {
+            saveApiKeyBtn.addEventListener('click', saveApiKey);
+        }
+        if (testApiBtn) {
+            testApiBtn.addEventListener('click', testApiConnection);
+        }
+        if (removeApiKeyBtn) {
+            removeApiKeyBtn.addEventListener('click', removeApiKey);
+        }
+        if (generateQuestionsBtn) {
+            generateQuestionsBtn.addEventListener('click', generateQuestions);
+        }
         
         // 彈窗關閉
         if (popupClose) {
@@ -278,8 +358,14 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const availableQuestions = questionDB.filter(q => q.level === selectedLevel || (selectedLevel === 'Beginner' && (q.level === 'N5' || q.level === 'N4')));
-        currentQuizQuestions = availableQuestions.sort(() => 0.5 - Math.random()).slice(0, selectedQuantity);
+        // 使用外部模組的函數取得題目
+        if (window.QuestionDatabase && window.QuestionDatabase.getRandomQuestions) {
+            currentQuizQuestions = window.QuestionDatabase.getRandomQuestions(selectedLevel, selectedQuantity);
+        } else {
+            // 回退到原本的方法
+            const availableQuestions = questionDB.filter(q => q.level === selectedLevel || (selectedLevel === 'Beginner' && (q.level === 'N5' || q.level === 'N4')));
+            currentQuizQuestions = availableQuestions.sort(() => 0.5 - Math.random()).slice(0, selectedQuantity);
+        }
 
         if (currentQuizQuestions.length < selectedQuantity) {
             let alertMsg = translations[currentLanguage].alertNotEnoughQuestions;
@@ -429,6 +515,180 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         switchScreen(screens.history);
+    }
+    
+    // --- 設定界面功能 ---
+    function showSettingsScreen() {
+        updateApiStatus();
+        switchScreen(screens.settings);
+    }
+    
+    function updateApiStatus() {
+        if (!window.apiConfig) return;
+        
+        const status = window.apiConfig.getStatus();
+        const statusDot = apiStatusIndicator.querySelector('.status-dot');
+        
+        if (status.isConfigured) {
+            statusDot.className = 'status-dot configured';
+            apiStatusText.textContent = translations[currentLanguage].apiConfigured;
+            removeApiKeyBtn.disabled = false;
+            testApiBtn.disabled = false;
+            generateQuestionsBtn.disabled = false;
+        } else {
+            statusDot.className = 'status-dot';
+            apiStatusText.textContent = translations[currentLanguage].apiNotConfigured;
+            removeApiKeyBtn.disabled = true;
+            testApiBtn.disabled = true;
+            generateQuestionsBtn.disabled = true;
+        }
+        
+        // 載入已存在的 API 金鑰到輸入框
+        if (apiKeyInput && status.hasApiKey) {
+            apiKeyInput.value = '••••••••••••••••••••••••••••••••••••••••';
+        }
+    }
+    
+    function toggleApiKeyVisibility() {
+        if (apiKeyInput.type === 'password') {
+            apiKeyInput.type = 'text';
+            toggleApiKeyVisibilityBtn.textContent = '🙈';
+        } else {
+            apiKeyInput.type = 'password';
+            toggleApiKeyVisibilityBtn.textContent = '👁️';
+        }
+    }
+    
+    function saveApiKey() {
+        const apiKey = apiKeyInput.value.trim();
+        
+        if (!apiKey || apiKey === '••••••••••••••••••••••••••••••••••••••••') {
+            showMessage(apiTestResult, translations[currentLanguage].testFailed + '請輸入有效的 API 金鑰', 'error');
+            return;
+        }
+        
+        try {
+            window.apiConfig.setGeminiApiKey(apiKey);
+            showMessage(apiTestResult, translations[currentLanguage].apiKeySaved, 'success');
+            updateApiStatus();
+        } catch (error) {
+            showMessage(apiTestResult, translations[currentLanguage].testFailed + error.message, 'error');
+        }
+    }
+    
+    async function testApiConnection() {
+        if (!window.apiConfig || !window.apiConfig.isConfigured) {
+            showMessage(apiTestResult, translations[currentLanguage].testFailed + '請先設定 API 金鑰', 'error');
+            return;
+        }
+        
+        // 更新按鈕狀態
+        const originalText = testApiBtn.textContent;
+        testApiBtn.disabled = true;
+        testApiBtn.innerHTML = '<span class="loading"></span> ' + translations[currentLanguage].apiTesting;
+        
+        // 更新狀態指示器
+        const statusDot = apiStatusIndicator.querySelector('.status-dot');
+        statusDot.className = 'status-dot testing';
+        apiStatusText.textContent = translations[currentLanguage].apiTesting;
+        
+        try {
+            await window.apiConfig.testConnection();
+            showMessage(apiTestResult, translations[currentLanguage].testSuccess, 'success');
+            updateApiStatus();
+        } catch (error) {
+            showMessage(apiTestResult, translations[currentLanguage].testFailed + error.message, 'error');
+            updateApiStatus();
+        } finally {
+            testApiBtn.disabled = false;
+            testApiBtn.textContent = originalText;
+        }
+    }
+    
+    function removeApiKey() {
+        if (confirm('確定要移除 API 金鑰嗎？')) {
+            window.apiConfig.removeApiKey();
+            apiKeyInput.value = '';
+            showMessage(apiTestResult, translations[currentLanguage].apiKeyRemoved, 'success');
+            updateApiStatus();
+        }
+    }
+    
+    async function generateQuestions() {
+        if (!window.apiConfig || !window.apiConfig.isConfigured) {
+            showMessage(generationResult, translations[currentLanguage].generateFailed + '請先設定 API 金鑰', 'error');
+            return;
+        }
+        
+        const level = genLevelSelect.value;
+        const type = genTypeSelect.value;
+        const topic = genTopicInput.value.trim();
+        const count = parseInt(genCountInput.value) || 1;
+        
+        // 更新按鈕狀態
+        const originalText = generateQuestionsBtn.textContent;
+        generateQuestionsBtn.disabled = true;
+        generateQuestionsBtn.innerHTML = '<span class="loading"></span> 生成中...';
+        
+        try {
+            const questions = await window.apiConfig.generateQuestions({
+                level,
+                type,
+                topic,
+                count
+            });
+            
+            // 顯示生成的題目
+            displayGeneratedQuestions(questions);
+            
+            // 將生成的題目添加到題庫
+            if (window.QuestionDatabase && window.QuestionDatabase.questionDB) {
+                window.QuestionDatabase.questionDB.push(...questions);
+                questionDB.push(...questions);
+            }
+            
+            showMessage(generationResult, translations[currentLanguage].generateSuccess + ` 共生成 ${questions.length} 題`, 'success');
+            
+        } catch (error) {
+            showMessage(generationResult, translations[currentLanguage].generateFailed + error.message, 'error');
+        } finally {
+            generateQuestionsBtn.disabled = false;
+            generateQuestionsBtn.textContent = originalText;
+        }
+    }
+    
+    function displayGeneratedQuestions(questions) {
+        const container = document.createElement('div');
+        container.className = 'generated-questions-container';
+        
+        questions.forEach((question, index) => {
+            const questionEl = document.createElement('div');
+            questionEl.className = 'generated-question';
+            questionEl.innerHTML = `
+                <h4>題目 ${index + 1}: ${question.question}</h4>
+                <div class="options">
+                    ${question.options.map(option => `<div class="option">• ${option}</div>`).join('')}
+                </div>
+                <div class="answer"><strong>正確答案:</strong> ${question.answer}</div>
+                <div class="explanation"><strong>解析:</strong> ${question.explanation}</div>
+            `;
+            container.appendChild(questionEl);
+        });
+        
+        generationResult.innerHTML = '';
+        generationResult.appendChild(container);
+        generationResult.classList.remove('hidden');
+    }
+    
+    function showMessage(container, message, type) {
+        container.textContent = message;
+        container.className = `test-result ${type}`;
+        container.classList.remove('hidden');
+        
+        // 3秒後自動隱藏
+        setTimeout(() => {
+            container.classList.add('hidden');
+        }, 3000);
     }
     
     // **新增**：繪製圖表的函式

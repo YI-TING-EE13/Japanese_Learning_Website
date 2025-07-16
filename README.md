@@ -1,214 +1,225 @@
-# Japanese Proficiency Test Web Application
+# 日本語能力測驗系統 (Japanese Proficiency Test System)
 
-## Overview
+## Project Overview
 
-A comprehensive, interactive web-based Japanese language proficiency assessment tool designed to evaluate and track learning progress across multiple JLPT (Japanese Language Proficiency Test) levels. This application provides an engaging, gamified learning experience with bilingual support and advanced progress tracking capabilities.
-
-## 📚 Academic Context
-
-This project represents a modern approach to computer-assisted language learning (CALL), specifically targeting Japanese language acquisition assessment. The application implements evidence-based pedagogical principles including immediate feedback, spaced repetition concepts, and progress visualization to enhance the learning experience.
+This is an advanced web-based Japanese Language Proficiency Test (JLPT) application that combines traditional static questions with AI-powered dynamic question generation. The application supports multiple JLPT levels (N5 to N1) and provides comprehensive learning analytics and progress tracking.
 
 ## 🌟 Key Features
 
-### Multi-Level Assessment System
+### Core Testing System
+- **Multi-Level Support**: JLPT levels N5, N4, N3, N2, N1, plus Beginner mode
+- **Question Categories**: 漢字 (Kanji), 詞彙 (Vocabulary), 文法 (Grammar), 讀解 (Reading Comprehension)
+- **Flexible Quiz Options**: 10, 20, 50 questions or custom quantity
+- **Real-time Timer**: Track completion time for each quiz attempt
+- **Bilingual Interface**: Full support for Traditional Chinese and English
 
-- **JLPT Levels**: Complete coverage from N5 (beginner) to N1 (advanced)
-- **Beginner Mode**: Specially curated content for absolute beginners
-- **Adaptive Questioning**: Dynamic question selection based on proficiency level
+### AI-Powered Question Generation
+- **Gemini API Integration**: Generate dynamic questions using Google's Gemini AI
+- **Customizable Generation**: Specify level, type, topic, and quantity
+- **Quality Validation**: Automatic format checking and content validation
+- **Seamless Integration**: Generated questions merge with static question database
+- **Rate Limiting**: Built-in API usage management and error handling
 
-### Comprehensive Question Categories
+### Advanced Analytics
+- **Progress Tracking**: Visual charts showing score improvement over time
+- **Achievement System**: Unlock badges for various milestones
+- **Detailed Analytics**: Category-wise performance breakdown
+- **History Management**: Comprehensive record of all quiz attempts
+- **Mistake Analysis**: Review incorrect answers with detailed explanations
 
-- **Kanji (漢字)**: Character reading and recognition
-- **Vocabulary (詞彙)**: Word usage and context comprehension
-- **Grammar (文法)**: Syntactic structure and particle usage
-
-### Advanced Learning Analytics
-
-- **Progress Visualization**: Interactive charts powered by Chart.js
-- **Performance Tracking**: Detailed analytics across different skill areas
-- **Historical Data**: Persistent learning history with trend analysis
-- **Achievement System**: Gamified badges to motivate continued learning
-
-### Internationalization & Accessibility
-
-- **Bilingual Interface**: Seamless switching between Traditional Chinese and English
-- **Responsive Design**: Optimized for both desktop and mobile platforms
-- **User Experience**: Intuitive navigation with modern UI/UX principles
-
-## 🚀 Quick Start Guide
-
-### Prerequisites
-
-- Modern web browser with JavaScript enabled
-- No additional software installation required
-
-### Running the Application
-
-1. **Clone or Download** the project files to your local machine
-2. **Navigate** to the project directory
-3. **Open** `index.html` in any modern web browser
-4. **Select** your preferred language (中文/English) using the language switcher
-5. **Choose** your proficiency level and begin testing
-
-### Alternative Local Server Method
-
-```bash
-# Using Python (recommended for development)
-python -m http.server 8000
-
-# Using Node.js
-npx serve .
-
-# Then navigate to http://localhost:8000
-```
+### Modern Architecture
+- **Modular Design**: Separated question database and API configuration
+- **Progressive Web App**: Mobile-optimized with PWA features
+- **Local Storage**: Client-side data persistence
+- **Responsive Design**: Adapts to all screen sizes and devices
+- **Clean UI/UX**: Modern interface with warm color scheme
 
 ## 🏗️ Technical Architecture
 
-### Frontend Technologies
-
+### Frontend Stack
 - **HTML5**: Semantic markup with accessibility considerations
-- **CSS3**: Modern styling with CSS Grid and Flexbox layouts
-- **Vanilla JavaScript**: ES6+ features with modular design patterns
-- **Chart.js**: Data visualization for progress tracking
-- **LocalStorage API**: Client-side data persistence
+- **CSS3**: Modern styling with CSS Grid, Flexbox, and CSS Variables
+- **Vanilla JavaScript**: ES6+ features, modular design, no external dependencies
+- **Chart.js**: Interactive progress visualization
+- **PWA Ready**: Service worker compatible, mobile app-like experience
 
-### Design Patterns
+### API Integration
+- **Google Gemini API**: Advanced language model for question generation
+- **RESTful Architecture**: Clean API communication patterns
+- **Error Handling**: Comprehensive error management and user feedback
+- **Security**: API key management with local encryption considerations
 
-- **Module Pattern**: Organized code structure for maintainability
-- **MVC Architecture**: Clear separation of concerns
-- **Event-Driven Programming**: Responsive user interactions
-- **Progressive Enhancement**: Graceful degradation for older browsers
+### Data Management
+- **Modular Question Database**: External JSON-structured question repository
+- **Dynamic Content**: AI-generated questions seamlessly integrated
+- **Progress Persistence**: LocalStorage for offline capability
+- **Export/Import Ready**: Structured data format for easy migration
 
-## 📊 Assessment Methodology
+## 📁 Project Structure
 
-### Question Selection Algorithm
-
-- **Randomization**: Ensures varied testing experience
-- **Level-Appropriate Content**: Questions filtered by selected proficiency level
-- **Balanced Distribution**: Equal representation across question categories
-
-### Scoring System
-
-- **Percentage-Based**: Clear performance metrics
-- **Category Analysis**: Detailed breakdown by skill area
-- **Time Tracking**: Performance efficiency measurement
-- **Trend Analysis**: Long-term progress monitoring
-
-## 🎯 Educational Features
-
-### Immediate Feedback System
-
-- **Detailed Explanations**: Comprehensive answer analysis
-- **Error Review**: Focused review of incorrect responses
-- **Learning Reinforcement**: Educational value beyond assessment
-
-### Progress Tracking
-
-- **Visual Analytics**: Chart-based progress visualization
-- **Historical Trends**: Long-term learning pattern analysis
-- **Achievement Milestones**: Motivational progress markers
-
-### Gamification Elements
-
-- **Badge System**: Recognition for various achievements
-- **Progress Levels**: Clear advancement pathways
-- **Performance Challenges**: Speed and accuracy incentives
-
-## 🗂️ Project Structure
-
-```text
-Japanese-Learning-Web/
-├── index.html              # Main application entry point
+```
+Japanese Learning Web/
+├── index.html              # Main application interface
 ├── script.js               # Core application logic
-├── style.css               # Styling and responsive design
-└── README.md               # Project documentation
+├── style.css               # Comprehensive styling system
+├── README.md               # Project documentation
+├── data/
+│   └── questionDB.js       # Modular question database
+└── config/
+    └── apiConfig.js        # API configuration and management
 ```
 
-### Core Components
+### File Descriptions
 
-#### index.html
+- **index.html**: Complete application interface with multi-screen navigation
+- **script.js**: Main application logic including quiz engine, analytics, and UI management
+- **style.css**: Modern responsive design with warm color scheme and mobile optimization
+- **data/questionDB.js**: Comprehensive question database with 37+ questions across all JLPT levels
+- **config/apiConfig.js**: API configuration class with rate limiting and error handling
 
-- Semantic HTML structure
-- Multi-screen interface layout
-- Internationalization markup
-- Chart.js integration
+## 🚀 Getting Started
 
-#### script.js
+### Prerequisites
+- Modern web browser (Chrome, Firefox, Safari, Edge)
+- Internet connection (for AI features)
+- Optional: Google Gemini API key for question generation
 
-- Application state management
-- Question database and logic
-- Progress tracking algorithms
-- Achievement system implementation
-- Bilingual translation engine
+### Installation
+1. Download or clone the project files
+2. Open `index.html` in a web browser
+3. Start taking quizzes immediately with static questions
+4. For AI features: Click "API 設定" and configure your Gemini API key
 
-#### style.css
+### API Setup (Optional)
+1. Visit [Google AI Studio](https://makersuite.google.com/app/apikey)
+2. Create a free account and generate an API key
+3. In the application, go to "API 設定" (Settings)
+4. Enter your API key and test the connection
+5. Use the question generator to create custom content
 
-- Responsive design system
-- Modern UI/UX styling
-- Accessibility considerations
-- Mobile-first approach
+## 🎯 Usage Guide
 
-## 🔧 Customization & Extension
+### Taking a Quiz
+1. Select your JLPT level (N5-N1 or Beginner)
+2. Choose the number of questions
+3. Click "開始測驗" to start
+4. Complete the quiz and review your results
+5. Check the mistake analysis for learning insights
 
-### Adding New Questions
+### Generating New Questions
+1. Configure your API key in settings
+2. Select level, type, and optional topic
+3. Choose quantity (1-5 questions)
+4. Click "生成題目" to generate
+5. Review generated questions before they're added to the database
 
-```javascript
-// Example question structure
-{
-    id: 13,
-    level: 'N4',
-    type: '文法',
-    question: 'Your question here...',
-    options: ['option1', 'option2', 'option3', 'option4'],
-    answer: 'correct_option',
-    explanation: 'Detailed explanation...'
-}
-```
+### Tracking Progress
+1. Complete multiple quizzes to build history
+2. View "學習紀錄" for progress charts
+3. Unlock achievements by reaching milestones
+4. Analyze category-wise performance for targeted study
 
-### Language Extension
+## 📊 Question Database
 
-The application supports easy extension to additional languages by expanding the `translations` object in `script.js`.
+### Static Content
+- **37+ Carefully Curated Questions** across all JLPT levels
+- **Authentic JLPT-Style Format** with multiple-choice options
+- **Detailed Explanations** for every question
+- **Topic Categorization** for targeted practice
+- **Difficulty Scaling** from basic to advanced concepts
 
-### Custom Achievements
+### Dynamic Generation
+- **AI-Powered Content**: Contextually appropriate questions
+- **Quality Assurance**: Automatic validation of format and content
+- **Seamless Integration**: Generated questions follow identical structure
+- **Infinite Expansion**: Unlimited question creation capability
 
-New achievement badges can be added to the `achievementsDB` object with corresponding unlock conditions.
+## 🏆 Achievement System
 
-## 📱 Browser Compatibility
+- **初次挑戰**: Complete your first quiz
+- **完美主義者**: Achieve a perfect score of 100
+- **N5入門**: Complete an N5 level quiz
+- **速讀者**: Finish 10+ questions in under 1 minute
+- **More achievements unlock as you progress**
 
-- **Chrome**: 60+ (recommended)
-- **Firefox**: 55+
-- **Safari**: 12+
-- **Edge**: 79+
-- **Mobile Browsers**: iOS Safari 12+, Chrome Mobile 60+
+## 🌐 Internationalization
+
+### Supported Languages
+- **Traditional Chinese**: Full interface translation
+- **English**: Complete localization
+- **Dynamic Switching**: Change language without losing progress
+- **Persistent Preference**: Language choice saved locally
+
+## 📱 Mobile Optimization
+
+- **Responsive Design**: Optimized for phones and tablets
+- **Touch-Friendly**: Large buttons and touch targets
+- **PWA Features**: Add to home screen capability
+- **Offline Ready**: Core functionality works without internet
+- **Performance Optimized**: Fast loading and smooth interactions
+
+## 🔧 Customization Options
+
+### Question Database
+- Add custom questions to `data/questionDB.js`
+- Follow the established JSON schema
+- Include all required fields for compatibility
+
+### Styling
+- Modify CSS variables in `style.css` for color themes
+- Responsive breakpoints easily adjustable
+- Component-based styling for easy customization
+
+### API Configuration
+- Extend `config/apiConfig.js` for additional AI services
+- Modify generation prompts for different question styles
+- Adjust rate limiting and error handling as needed
+
+## 🔐 Security Considerations
+
+- **API Key Storage**: Local storage with encryption recommendations
+- **Rate Limiting**: Built-in protection against API abuse
+- **Data Privacy**: All user data stored locally, no external transmission
+- **Content Validation**: AI-generated content automatically validated
 
 ## 🤝 Contributing
 
-This project welcomes contributions from educators, developers, and Japanese language learning enthusiasts. Areas for potential contribution include:
+We welcome contributions to improve the Japanese Learning Web application:
 
-- Question database expansion
-- Additional language interface support
-- Enhanced analytics features
-- Accessibility improvements
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly across different browsers
+5. Submit a pull request with detailed description
+
+### Areas for Contribution
+- Additional question content
+- New achievement types
+- UI/UX improvements
+- Additional language support
 - Performance optimizations
-
-## 📋 Future Development Roadmap
-
-- **Audio Integration**: Listening comprehension components
-- **Adaptive Learning**: AI-driven question difficulty adjustment
-- **Social Features**: Community learning and competition elements
-- **Export Functionality**: Progress report generation
-- **Offline Capability**: Progressive Web App (PWA) implementation
 
 ## 📄 License
 
-This project is open source and available for educational and non-commercial use. Please ensure proper attribution when using or modifying the codebase.
+This project is open source and available under the MIT License. Feel free to use, modify, and distribute according to the license terms.
 
-## 🙏 Acknowledgments
+## 🆘 Support
 
-- Japanese Language Proficiency Test (JLPT) standards reference
-- Chart.js library for data visualization capabilities
-- Modern web development best practices and accessibility guidelines
+For issues, suggestions, or questions:
+1. Check existing documentation
+2. Review browser console for error messages
+3. Verify API configuration if using AI features
+4. Create detailed issue reports with reproduction steps
+
+## 📈 Future Roadmap
+
+- **Additional AI Models**: Support for multiple language models
+- **Enhanced Analytics**: More detailed learning insights
+- **Social Features**: Score sharing and competition
+- **Offline Mode**: Complete offline functionality
+- **Advanced Question Types**: Audio and image-based questions
+- **Spaced Repetition**: Intelligent review scheduling
 
 ---
 
-**Developer Note**: This application serves as both a functional language learning tool and a demonstration of modern web development practices in educational technology. The codebase emphasizes maintainability, scalability, and user experience optimization.
+**Created with ❤️ for Japanese language learners worldwide**

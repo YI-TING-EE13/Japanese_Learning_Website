@@ -62,6 +62,7 @@
 
                 <button id="start-quiz-btn" class="main-btn" data-translate-key="startBtn">開始測驗</button>
                 <button id="show-history-btn" class="secondary-btn" data-translate-key="historyBtn">查看學習紀錄</button>
+                <button id="show-settings-btn" class="secondary-btn" data-translate-key="settingsBtn">API 設定</button>
             </main>
         </div>
 
@@ -115,6 +116,83 @@
                 <button id="back-to-start-btn" class="main-btn" data-translate-key="backBtn">返回首頁</button>
             </main>
         </div>
+
+        <!-- 設定畫面 -->
+        <div id="settings-screen" class="screen">
+            <header>
+                <h1 data-translate-key="settingsTitle">API 設定</h1>
+            </header>
+            <main>
+                <section id="api-config">
+                    <h2 data-translate-key="geminiApiTitle">Gemini API 配置</h2>
+                    <div class="api-status">
+                        <div id="api-status-indicator" class="status-indicator">
+                            <span class="status-dot"></span>
+                            <span id="api-status-text" data-translate-key="apiNotConfigured">尚未配置</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="api-key-input" data-translate-key="apiKeyLabel">API 金鑰:</label>
+                        <div class="input-group">
+                            <input type="password" id="api-key-input" placeholder="請輸入您的 Gemini API 金鑰">
+                            <button id="toggle-api-key-visibility" class="icon-btn">👁️</button>
+                        </div>
+                        <small class="helper-text" data-translate-key="apiKeyHelper">
+                            您可以在 <a href="https://makersuite.google.com/app/apikey" target="_blank">Google AI Studio</a> 取得免費的 API 金鑰
+                        </small>
+                    </div>
+                    
+                    <div class="button-group">
+                        <button id="save-api-key-btn" class="main-btn" data-translate-key="saveApiKey">儲存金鑰</button>
+                        <button id="test-api-btn" class="secondary-btn" data-translate-key="testApi">測試連接</button>
+                        <button id="remove-api-key-btn" class="danger-btn" data-translate-key="removeApiKey">移除金鑰</button>
+                    </div>
+                    
+                    <div id="api-test-result" class="test-result hidden"></div>
+                </section>
+
+                <section id="question-generator">
+                    <h2 data-translate-key="questionGeneratorTitle">題目生成器</h2>
+                    <div class="form-group">
+                        <label for="gen-level" data-translate-key="genLevelLabel">等級:</label>
+                        <select id="gen-level">
+                            <option value="N5">N5</option>
+                            <option value="N4">N4</option>
+                            <option value="N3">N3</option>
+                            <option value="N2">N2</option>
+                            <option value="N1">N1</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="gen-type" data-translate-key="genTypeLabel">類型:</label>
+                        <select id="gen-type">
+                            <option value="漢字">漢字</option>
+                            <option value="詞彙">詞彙</option>
+                            <option value="文法">文法</option>
+                            <option value="讀解">讀解</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="gen-topic" data-translate-key="genTopicLabel">主題 (可選):</label>
+                        <input type="text" id="gen-topic" placeholder="例如：食物、交通、家庭">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="gen-count" data-translate-key="genCountLabel">數量:</label>
+                        <input type="number" id="gen-count" min="1" max="5" value="1">
+                    </div>
+                    
+                    <button id="generate-questions-btn" class="main-btn" data-translate-key="generateQuestions">生成題目</button>
+                    
+                    <div id="generation-result" class="generation-result hidden"></div>
+                </section>
+
+                <button id="back-to-start-from-settings-btn" class="main-btn" data-translate-key="backBtn">返回首頁</button>
+            </main>
+        </div>
     </div>
 
     <!-- 成就彈窗 (無變更) -->
@@ -128,6 +206,9 @@
         </div>
     </div>
 
+    <!-- 載入配置和題庫模組 -->
+    <script src="config/apiConfig.js"></script>
+    <script src="data/questionDB.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

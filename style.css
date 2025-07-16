@@ -219,3 +219,229 @@ input, select, textarea {
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
+
+/* === 設定界面樣式 === */
+#settings-screen .form-group {
+    margin-bottom: 20px;
+}
+
+#settings-screen label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+#settings-screen input,
+#settings-screen select {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #E0E0E0;
+    border-radius: 8px;
+    font-size: 16px;
+    background-color: white;
+    transition: border-color 0.3s;
+}
+
+#settings-screen input:focus,
+#settings-screen select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+.input-group {
+    position: relative;
+    display: flex;
+}
+
+.input-group input {
+    flex: 1;
+    border-radius: 8px 0 0 8px;
+}
+
+.icon-btn {
+    padding: 12px 16px;
+    border: 2px solid #E0E0E0;
+    border-left: none;
+    border-radius: 0 8px 8px 0;
+    background-color: #F5F5F5;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.icon-btn:hover {
+    background-color: #E0E0E0;
+}
+
+.helper-text {
+    display: block;
+    margin-top: 5px;
+    color: #666;
+    font-size: 14px;
+}
+
+.helper-text a {
+    color: var(--secondary-color);
+    text-decoration: none;
+}
+
+.helper-text a:hover {
+    text-decoration: underline;
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.danger-btn {
+    background-color: var(--wrong-color);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.danger-btn:hover {
+    background-color: #D32F2F;
+}
+
+.danger-btn:disabled {
+    background-color: #CCCCCC;
+    cursor: not-allowed;
+}
+
+/* API 狀態指示器 */
+.api-status {
+    margin-bottom: 20px;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #F5F5F5;
+}
+
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.status-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #F44336; /* 預設為紅色（未配置） */
+}
+
+.status-dot.configured {
+    background-color: #4CAF50; /* 綠色（已配置） */
+}
+
+.status-dot.testing {
+    background-color: #FF9800; /* 橙色（測試中） */
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+/* 測試結果 */
+.test-result {
+    margin-top: 15px;
+    padding: 15px;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+.test-result.success {
+    background-color: #E8F5E8;
+    color: #2E7D32;
+    border-left: 4px solid #4CAF50;
+}
+
+.test-result.error {
+    background-color: #FFEBEE;
+    color: #C62828;
+    border-left: 4px solid #F44336;
+}
+
+.test-result.hidden {
+    display: none;
+}
+
+/* 題目生成結果 */
+.generation-result {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #F9F9F9;
+    border-left: 4px solid var(--primary-color);
+}
+
+.generation-result.hidden {
+    display: none;
+}
+
+.generated-question {
+    background-color: white;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 8px;
+    border: 1px solid #E0E0E0;
+}
+
+.generated-question h4 {
+    margin: 0 0 10px 0;
+    color: var(--text-color);
+}
+
+.generated-question .options {
+    margin: 10px 0;
+}
+
+.generated-question .option {
+    display: block;
+    padding: 5px 0;
+    color: #666;
+}
+
+.generated-question .answer {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #E8F5E8;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.generated-question .explanation {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #FFF3E0;
+    border-radius: 5px;
+    font-style: italic;
+}
+
+/* 載入狀態 */
+.loading {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

@@ -111,6 +111,9 @@
                 </section>
                 <section id="my-history">
                     <h2 data-translate-key="myHistoryTitle">測驗歷史</h2>
+                    <div class="history-controls">
+                        <button id="clear-history-btn" class="danger-btn" data-translate-key="clearHistory">清除所有紀錄</button>
+                    </div>
                     <div id="history-list-container"></div>
                 </section>
                 <button id="back-to-start-btn" class="main-btn" data-translate-key="backBtn">返回首頁</button>
@@ -190,6 +193,44 @@
                     <div id="generation-result" class="generation-result hidden"></div>
                 </section>
 
+                <!-- 新增：題庫管理區塊 -->
+                <section id="question-storage">
+                    <h2 data-translate-key="storageManagerTitle">題庫管理</h2>
+                    
+                    <div class="storage-stats" id="storage-stats">
+                        <div class="stat-item">
+                            <span data-translate-key="totalStored">已儲存題目:</span>
+                            <span id="total-stored-count">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span data-translate-key="storageSize">儲存大小:</span>
+                            <span id="storage-size">0 KB</span>
+                        </div>
+                    </div>
+                    
+                    <div class="storage-controls">
+                        <div class="button-group">
+                            <button id="export-json-btn" class="secondary-btn" data-translate-key="exportJson">匯出 JSON</button>
+                            <button id="export-csv-btn" class="secondary-btn" data-translate-key="exportCsv">匯出 CSV</button>
+                        </div>
+                        
+                        <div class="import-section">
+                            <label for="import-file" class="file-label" data-translate-key="importQuestions">匯入題目</label>
+                            <input type="file" id="import-file" accept=".json,.csv" class="file-input">
+                            <div id="import-result" class="import-result hidden"></div>
+                        </div>
+                        
+                        <button id="clear-storage-btn" class="danger-btn" data-translate-key="clearStorage">清除所有儲存題目</button>
+                    </div>
+                    
+                    <div class="storage-details" id="storage-details">
+                        <h3 data-translate-key="storageBreakdown">儲存明細</h3>
+                        <div id="level-breakdown" class="breakdown"></div>
+                        <div id="type-breakdown" class="breakdown"></div>
+                        <div id="source-breakdown" class="breakdown"></div>
+                    </div>
+                </section>
+
                 <button id="back-to-start-from-settings-btn" class="main-btn" data-translate-key="backBtn">返回首頁</button>
             </main>
         </div>
@@ -209,6 +250,7 @@
     <!-- 載入配置和題庫模組 -->
     <script src="config/apiConfig.js"></script>
     <script src="data/questionDB.js"></script>
+    <script src="data/storageManager.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

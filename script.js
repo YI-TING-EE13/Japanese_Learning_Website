@@ -1,6 +1,42 @@
+/**
+ * Japanese Learning Web Application - Main Script
+ * 
+ * @fileoverview Main application controller for the Japanese language learning quiz system.
+ * Handles UI interactions, quiz logic, progress tracking, and multilingual support.
+ * 
+ * @author Japanese Learning Web App
+ * @version 2.0.0
+ * @since 1.0.0
+ * 
+ * @description This is the primary JavaScript file that orchestrates the entire
+ * Japanese learning application including:
+ * - Quiz generation and management
+ * - User progress tracking and analytics
+ * - Multilingual interface support
+ * - API integration for dynamic content
+ * - Local storage management
+ * - Badge and achievement system
+ */
+
+/**
+ * Initialize application when DOM is fully loaded
+ * 
+ * @description Sets up event listeners, initializes components, and configures
+ * the application for user interaction
+ */
 document.addEventListener('DOMContentLoaded', () => {
 
-    // --- 多語言翻譯物件 ---
+    /**
+     * Multilingual translation object
+     * 
+     * @type {Object}
+     * @description Contains all UI text translations for supported languages.
+     * Currently supports Chinese (zh) and English (en) with extensible structure
+     * for additional languages.
+     * 
+     * @property {Object} zh - Chinese translations
+     * @property {Object} en - English translations (when implemented)
+     */
     const translations = {
         zh: {
             pageTitle: "日文能力測驗",
@@ -66,7 +102,27 @@ document.addEventListener('DOMContentLoaded', () => {
             testSuccess: "連接測試成功！",
             testFailed: "連接測試失敗：",
             generateSuccess: "題目生成成功！",
-            generateFailed: "題目生成失敗："
+            generateFailed: "題目生成失敗：",
+            // 儲存管理翻譯
+            storageManagerTitle: "題庫管理",
+            totalStored: "已儲存題目",
+            storageSize: "儲存大小",
+            exportJson: "匯出 JSON",
+            exportCsv: "匯出 CSV",
+            importQuestions: "匯入題目",
+            clearStorage: "清除所有儲存題目",
+            storageBreakdown: "儲存明細",
+            exportSuccess: "匯出成功！",
+            importSuccess: "匯入成功！共匯入 {count} 題",
+            clearConfirm: "確定要清除所有儲存的題目嗎？此操作不可復原！",
+            clearSuccess: "已清除所有儲存的題目",
+            noQuestionsToExport: "沒有題目可以匯出",
+            questionsSaved: "題目已儲存！共 {count} 題",
+            // 學習紀錄管理翻譯
+            clearHistory: "清除所有紀錄",
+            clearHistoryConfirm: "確定要清除所有學習紀錄嗎？此操作不可復原！",
+            historyCleared: "學習紀錄已清除",
+            deleteRecord: "刪除"
         },
         en: {
             pageTitle: "Japanese Proficiency Test",
@@ -132,7 +188,27 @@ document.addEventListener('DOMContentLoaded', () => {
             testSuccess: "Connection successful!",
             testFailed: "Connection failed: ",
             generateSuccess: "Questions generated successfully!",
-            generateFailed: "Generation failed: "
+            generateFailed: "Generation failed: ",
+            // 儲存管理翻譯
+            storageManagerTitle: "Question Storage",
+            totalStored: "Stored Questions",
+            storageSize: "Storage Size",
+            exportJson: "Export JSON",
+            exportCsv: "Export CSV",
+            importQuestions: "Import Questions",
+            clearStorage: "Clear All Stored Questions",
+            storageBreakdown: "Storage Breakdown",
+            exportSuccess: "Export successful!",
+            importSuccess: "Import successful! {count} questions imported",
+            clearConfirm: "Are you sure you want to clear all stored questions? This action cannot be undone!",
+            clearSuccess: "All stored questions cleared",
+            noQuestionsToExport: "No questions to export",
+            questionsSaved: "Questions saved! Total: {count}",
+            // 學習紀錄管理翻譯
+            clearHistory: "Clear All Records",
+            clearHistoryConfirm: "Are you sure you want to clear all learning records? This action cannot be undone!",
+            historyCleared: "Learning records cleared",
+            deleteRecord: "Delete"
         }
     };
     
@@ -177,6 +253,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const backToStartFromSettingsBtn = document.getElementById('back-to-start-from-settings-btn');
     const historyListContainer = document.getElementById('history-list-container');
     const achievementsContainer = document.getElementById('achievements-container');
+    const clearHistoryBtn = document.getElementById('clear-history-btn');
     const popup = document.getElementById('achievement-popup');
     const popupClose = document.querySelector('.popup-close');
     
@@ -197,6 +274,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const genCountInput = document.getElementById('gen-count');
     const generateQuestionsBtn = document.getElementById('generate-questions-btn');
     const generationResult = document.getElementById('generation-result');
+    
+    // 儲存管理器元素
+    const totalStoredCount = document.getElementById('total-stored-count');
+    const storageSize = document.getElementById('storage-size');
+    const exportJsonBtn = document.getElementById('export-json-btn');
+    const exportCsvBtn = document.getElementById('export-csv-btn');
+    const importFileInput = document.getElementById('import-file');
+    const importResult = document.getElementById('import-result');
+    const clearStorageBtn = document.getElementById('clear-storage-btn');
+    const storageDetails = document.getElementById('storage-details');
+    const levelBreakdown = document.getElementById('level-breakdown');
+    const typeBreakdown = document.getElementById('type-breakdown');
+    const sourceBreakdown = document.getElementById('source-breakdown');
     
     // (其他元素獲取與前一版相同，此處省略)
     const levelCards = document.querySelectorAll('.card');
@@ -293,10 +383,32 @@ document.addEventListener('DOMContentLoaded', () => {
             generateQuestionsBtn.addEventListener('click', generateQuestions);
         }
         
+        // 儲存管理器事件監聽器
+        if (exportJsonBtn) {
+            exportJsonBtn.addEventListener('click', () => exportQuestions('json'));
+        }
+        if (exportCsvBtn) {
+            exportCsvBtn.addEventListener('click', () => exportQuestions('csv'));
+        }
+        if (importFileInput) {
+            importFileInput.addEventListener('change', handleFileImport);
+        }
+        if (clearStorageBtn) {
+            clearStorageBtn.addEventListener('click', clearStoredQuestions);
+        }
+        
+        // 學習紀錄管理事件監聽器
+        if (clearHistoryBtn) {
+            clearHistoryBtn.addEventListener('click', clearAllHistory);
+        }
+        
         // 彈窗關閉
         if (popupClose) {
             popupClose.addEventListener('click', () => popup.classList.add('hidden'));
         }
+        
+        // 初始化儲存統計
+        updateStorageStats();
     }
 
     // --- 語言功能 ---
@@ -478,10 +590,17 @@ document.addEventListener('DOMContentLoaded', () => {
         // 載入歷史列表
         historyListContainer.innerHTML = '';
         if (history.length > 0) {
-            history.forEach(item => {
+            history.forEach((item, index) => {
                 const itemEl = document.createElement('div');
                 itemEl.className = 'history-item';
-                itemEl.innerHTML = `<span>${item.date}</span><span>${translations[currentLanguage].level}: ${item.level}</span><span class="score">${translations[currentLanguage].score}: ${item.score}</span>`;
+                itemEl.innerHTML = `
+                    <div class="history-info">
+                        <span>${item.date}</span>
+                        <span>${translations[currentLanguage].level}: ${item.level}</span>
+                        <span class="score">${translations[currentLanguage].score}: ${item.score}</span>
+                    </div>
+                    <button class="delete-record-btn" onclick="deleteHistoryRecord(${index})" data-translate-key="deleteRecord">${translations[currentLanguage].deleteRecord}</button>
+                `;
                 historyListContainer.appendChild(itemEl);
             });
         } else {
@@ -494,6 +613,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- 設定界面功能 ---
     function showSettingsScreen() {
         updateApiStatus();
+        updateStorageStats(); // 更新儲存統計
         switchScreen(screens.settings);
     }
     
@@ -615,13 +735,23 @@ document.addEventListener('DOMContentLoaded', () => {
             // 顯示生成的題目
             displayGeneratedQuestions(questions);
             
-            // 將生成的題目添加到題庫
+            // 將生成的題目添加到記憶體題庫
             if (window.QuestionDatabase && window.QuestionDatabase.questionDB) {
                 window.QuestionDatabase.questionDB.push(...questions);
                 questionDB.push(...questions);
             }
             
-            showMessage(generationResult, translations[currentLanguage].generateSuccess + ` 共生成 ${questions.length} 題`, 'success');
+            // **新增**：永久儲存生成的題目
+            if (window.storageManager) {
+                const storedCount = window.storageManager.saveGeneratedQuestions(questions);
+                updateStorageStats(); // 更新儲存統計
+                
+                let successMsg = translations[currentLanguage].generateSuccess + ` 共生成 ${questions.length} 題`;
+                successMsg += '\n' + translations[currentLanguage].questionsSaved.replace('{count}', storedCount);
+                showMessage(generationResult, successMsg, 'success');
+            } else {
+                showMessage(generationResult, translations[currentLanguage].generateSuccess + ` 共生成 ${questions.length} 題`, 'success');
+            }
             
         } catch (error) {
             showMessage(generationResult, translations[currentLanguage].generateFailed + error.message, 'error');
@@ -795,6 +925,160 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }, 1000);
     }
+    
+    // --- 儲存管理功能 ---
+    
+    /**
+     * 更新儲存統計顯示
+     */
+    function updateStorageStats() {
+        if (!window.storageManager) return;
+        
+        const stats = window.storageManager.getStorageStats();
+        
+        // 更新基本統計
+        if (totalStoredCount) totalStoredCount.textContent = stats.total;
+        if (storageSize) storageSize.textContent = `${stats.storageSize} KB`;
+        
+        // 更新詳細統計
+        updateBreakdown(levelBreakdown, '等級', stats.byLevel);
+        updateBreakdown(typeBreakdown, '類型', stats.byType);
+        updateBreakdown(sourceBreakdown, '來源', stats.bySource);
+    }
+    
+    /**
+     * 更新統計明細顯示
+     */
+    function updateBreakdown(container, title, data) {
+        if (!container) return;
+        
+        container.innerHTML = `<h4>${title}分佈:</h4>`;
+        if (Object.keys(data).length === 0) {
+            container.innerHTML += '<p>無資料</p>';
+            return;
+        }
+        
+        const list = document.createElement('ul');
+        Object.entries(data).forEach(([key, count]) => {
+            const item = document.createElement('li');
+            item.textContent = `${key}: ${count} 題`;
+            list.appendChild(item);
+        });
+        container.appendChild(list);
+    }
+    
+    /**
+     * 匯出題目
+     */
+    function exportQuestions(format) {
+        try {
+            if (!window.storageManager) {
+                throw new Error('儲存管理器未載入');
+            }
+            
+            window.storageManager.exportQuestions(format);
+            showMessage(importResult, translations[currentLanguage].exportSuccess, 'success');
+        } catch (error) {
+            showMessage(importResult, error.message, 'error');
+        }
+    }
+    
+    /**
+     * 處理檔案匯入
+     */
+    async function handleFileImport(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        
+        try {
+            if (!window.storageManager) {
+                throw new Error('儲存管理器未載入');
+            }
+            
+            const importedCount = await window.storageManager.importQuestions(file);
+            
+            // 更新記憶體題庫
+            const storedQuestions = window.storageManager.getStoredQuestions();
+            if (window.QuestionDatabase && window.QuestionDatabase.questionDB) {
+                // 只添加新匯入的題目到記憶體
+                const newQuestions = storedQuestions.filter(q => q.source === 'imported');
+                window.QuestionDatabase.questionDB.push(...newQuestions);
+                questionDB.push(...newQuestions);
+            }
+            
+            updateStorageStats();
+            
+            const successMsg = translations[currentLanguage].importSuccess.replace('{count}', importedCount);
+            showMessage(importResult, successMsg, 'success');
+            
+            // 清除檔案輸入
+            event.target.value = '';
+            
+        } catch (error) {
+            showMessage(importResult, error.message, 'error');
+            event.target.value = '';
+        }
+    }
+    
+    /**
+     * 清除儲存的題目
+     */
+    function clearStoredQuestions() {
+        const confirmMsg = translations[currentLanguage].clearConfirm;
+        
+        if (confirm(confirmMsg)) {
+            try {
+                if (!window.storageManager) {
+                    throw new Error('儲存管理器未載入');
+                }
+                
+                window.storageManager.clearStoredQuestions();
+                updateStorageStats();
+                showMessage(importResult, translations[currentLanguage].clearSuccess, 'success');
+                
+            } catch (error) {
+                showMessage(importResult, error.message, 'error');
+            }
+        }
+    }
+    
+    // --- 學習紀錄管理功能 ---
+    
+    /**
+     * 刪除單個學習紀錄
+     * @param {number} index - 紀錄的索引
+     */
+    function deleteHistoryRecord(index) {
+        const history = JSON.parse(localStorage.getItem('quizHistory')) || [];
+        
+        if (index >= 0 && index < history.length) {
+            history.splice(index, 1);
+            localStorage.setItem('quizHistory', JSON.stringify(history));
+            
+            // 重新顯示歷史紀錄
+            showHistoryScreen();
+        }
+    }
+    
+    /**
+     * 清除所有學習紀錄
+     */
+    function clearAllHistory() {
+        const confirmMsg = translations[currentLanguage].clearHistoryConfirm;
+        
+        if (confirm(confirmMsg)) {
+            localStorage.removeItem('quizHistory');
+            localStorage.removeItem('unlockedBadges'); // 同時清除徽章
+            
+            // 重新顯示歷史紀錄
+            showHistoryScreen();
+            
+            alert(translations[currentLanguage].historyCleared);
+        }
+    }
+    
+    // 將函數添加到全域範圍，供 HTML 中的 onclick 使用
+    window.deleteHistoryRecord = deleteHistoryRecord;
     
     // 啟動！
     init();
